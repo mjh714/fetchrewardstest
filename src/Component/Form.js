@@ -44,7 +44,8 @@ export default function Signup(props) {
     })
   }
     if(!validator.isEmail(email)){
-      setError('password', {
+      console.log('error')
+      setError('email', {
         type: 'custom',
         message: "Please enter a valid email"
       })
@@ -68,7 +69,11 @@ export default function Signup(props) {
         message: "Please select your state"
       })
     }
-    props.signUp(data)
+    console.log(errors)
+    if(errors === {}){
+      props.signUp(data);
+    }
+    
    
   }
 
