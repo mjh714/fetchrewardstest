@@ -20,39 +20,53 @@ export default function Signup(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('fullName', {
-      type: 'custom', 
-      message: "Please enter your full name"
-    })
-    setError('email', {
-      type: 'custom', 
-      message: "Please enter your email"
-    })
-    if(!validator.isEmail(email)){
-      setError('password', {
-        type: 'custom',
-        message: "Please enter a valid email"
-      })
-    }
-    setError('password', {
-      type: 'custom', 
-      message: 'Please enter a password'
-    })
-    setError('job', {
-      type: 'custom', 
-      message: "Please select your occupation"
-    })
-    setError('location', {
-      type: 'custom', 
-      message: "Please select your state"
-    })
-    
+
     let data = {
       "name": fullName,
       "email": email,
       "password": password,
       "occupation": job,
       "state": location
+    }
+    console.log(data["occupation"])
+
+    if(data["name"] === undefined){
+      setError('fullName', {
+        type: 'custom', 
+        message: "Please enter your full name"
+      })
+    }
+    
+  if(data['email'] === undefined) {
+    setError('email', {
+      type: 'custom', 
+      message: "Please enter your email"
+    })
+  }
+    if(!validator.isEmail(email)){
+      setError('password', {
+        type: 'custom',
+        message: "Please enter a valid email"
+      })
+    }
+
+    if(data["password"] === undefined || data["password"].length < 8){
+      setError('password', {
+        type: 'custom', 
+        message: 'Please enter a password'
+      })
+    }
+   if(data["occupation"] === undefined){
+    setError('job', {
+      type: 'custom', 
+      message: "Please select your occupation"
+    })
+   }
+    if(data["state"] === undefined){
+      setError('location', {
+        type: 'custom', 
+        message: "Please select your state"
+      })
     }
     props.signUp(data)
    
@@ -68,21 +82,21 @@ export default function Signup(props) {
     <input {...register("fullName", { required: true, message: 'Please enter your full name'})} 
     type='text' name='fullName' value={fullName} onChange={e => setFullName(e.target.value)} />
     <br />
-    {errors.fullName?.message}
+    <p className="errors"> {errors.fullName?.message} </p>
     <br />
     <label> Email </label>
     <br />
     <input {...register('email', {required: true, pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"})}
      tpye='text' name='email' value={email} onChange={e => setEmail(e.target.value)} />
     <br/>
-    {errors.email?.message}
+    <p className="errors"> {errors.email?.message} </p>
     <br />
     <label> Password </label>
     <br />
     <input {...register('password', {required: true, minLength: 8, message: "Your password is must be at least 8 characters"})} 
     type='password' name='password' value={password} onChange={e => setPassword(e.target.value)} />
     <br/>
-    {errors.password?.message}
+    <p className="errors"> {errors.password?.message} </p>
     <br />
     <label> Select your Occupation </label>
     <br />
@@ -95,7 +109,7 @@ export default function Signup(props) {
           {jobs !== undefined ? jobs.map((job) => <option key={job} value={job}>{job}</option>) : null} 
       </select>
       <br/>
-      {errors.occupation?.message}
+      <p className="errors"> {errors.occupation?.message} </p>
       <br/>
       <label> Select your State </label>
       <br/>
@@ -112,7 +126,7 @@ export default function Signup(props) {
           {locations !== undefined ? locations.map((location) => <option key={location.abbreviation} value={location.name}>{location.name}</option>) : null}
       </select>
       <br/>
-      {errors.location?.message}
+      <p className="errors"> {errors.location?.message} </p>
       <br/>
       <br/>
       <input type='submit'/>
