@@ -28,8 +28,6 @@ export default function Signup(props) {
       "occupation": job,
       "state": location
     }
-    console.log(data["occupation"])
-
     if(data["name"] === undefined){
       setError('fullName', {
         type: 'custom', 
@@ -69,8 +67,7 @@ export default function Signup(props) {
         message: "Please select your state"
       })
     }
-    console.log(errors)
-    if(errors === {}){
+    if(errors.length === undefined){
       props.signUp(data);
     }
     
